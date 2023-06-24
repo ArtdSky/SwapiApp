@@ -62,3 +62,7 @@ proguard/
 #.externalNativeBuild
 #.cxx
 /gradle/
+/gradlew.bat
+/gradlew
+/gradle.properties
+/app/proguard-rules.pro
