@@ -4,12 +4,12 @@ import com.example.swapiapp.data.storage.network.models.PeopleResponse
 import com.example.swapiapp.data.storage.network.models.StarshipsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface NetworkEndpoint {
+    @GET("/api/people/")
+    suspend fun getPeopleByName(@Query("search") name: String): PeopleResponse
 
-    @GET("/people/?search={name}")
-    suspend fun getPeopleByName(@Path("name") name: String): PeopleResponse
-
-    @GET("/starships/?search={name}")
-    suspend fun getStarshipsByName(@Path("name") name: String): StarshipsResponse
+    @GET("/api/starships/")
+    suspend fun getStarshipsByName(@Query("search") name: String): StarshipsResponse
 }

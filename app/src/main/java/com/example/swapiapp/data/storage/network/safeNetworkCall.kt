@@ -1,5 +1,6 @@
 package com.example.swapiapp.data.storage.network
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -26,7 +27,10 @@ suspend fun <T> safeNetworkCall(
                     val code = throwable.code()
                     ResponseWrapper.GenericError(code)
                 }
-                else -> ResponseWrapper.GenericError(null)
+                else -> {
+                    Log.e("ERROR", "An unexpected error occurred", throwable)
+                    ResponseWrapper.GenericError(null)
+                }
             }
         }
     }
