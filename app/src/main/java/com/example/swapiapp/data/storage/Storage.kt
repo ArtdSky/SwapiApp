@@ -1,11 +1,13 @@
 package com.example.swapiapp.data.storage
 
-import com.example.swapiapp.domain.models.People
-import com.example.swapiapp.domain.models.Starships
+import com.example.swapiapp.data.storage.network.ResponseWrapper
+import com.example.swapiapp.data.storage.network.models.PeopleResponse
+import com.example.swapiapp.data.storage.network.models.StarshipsResponse
+import kotlinx.coroutines.flow.Flow
 
 interface Storage {
 
-    suspend fun getPeopleByName(name : String) : List<People>
+    suspend fun getPeopleByName(name : String) : Flow<ResponseWrapper<PeopleResponse>>
 
-    suspend fun getStarshipsByName(name : String) : List<Starships>
+    suspend fun getStarshipsByName(name : String) : Flow<ResponseWrapper<StarshipsResponse>>
 }
