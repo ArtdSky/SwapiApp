@@ -82,6 +82,7 @@ fun FavoritesScreen(
                         items(favoritePeople.size) { index ->
                             PeopleCard(
                                 people = favoritePeople[index],
+                                vm = vm,
                                 deleteFromFavorite = {
                                     favoritePeople[index].name?.let {
                                         vm.deletePeopleFromFavorites(

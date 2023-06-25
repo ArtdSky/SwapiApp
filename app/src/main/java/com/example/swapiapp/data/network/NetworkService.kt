@@ -33,4 +33,8 @@ object NetworkService {
     val swapiService by lazy {
         retrofit.create(NetworkEndpoint::class.java)
     }
+
+    val filmsService by lazy {
+        retrofit.create(FilmsEndpoint::class.java)
+    }
 }

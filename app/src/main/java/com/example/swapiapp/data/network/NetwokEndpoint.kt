@@ -13,3 +13,4 @@ interface NetworkEndpoint {
     @GET("/api/starships/")
     suspend fun getStarshipsByName(@Query("search") name: String): StarshipsResponse
 }
+
