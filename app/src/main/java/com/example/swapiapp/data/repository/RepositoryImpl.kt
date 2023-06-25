@@ -3,7 +3,9 @@ package com.example.swapiapp.data.repository
 import android.accounts.NetworkErrorException
 import android.util.Log
 import com.example.swapiapp.data.network.GenericErrorException
+import com.example.swapiapp.data.network.NetworkService
 import com.example.swapiapp.data.network.ResponseWrapper
+import com.example.swapiapp.data.network.safeNetworkCall
 import com.example.swapiapp.data.repository.mappers.mapEntityToPeople
 import com.example.swapiapp.data.repository.mappers.mapEntityToStarships
 import com.example.swapiapp.data.repository.mappers.mapPeopleDataToDomain
@@ -14,19 +16,23 @@ import com.example.swapiapp.data.storage.people.ApiPeopleLocalStorage
 import com.example.swapiapp.data.storage.people.ApiPeopleNetworkStorage
 import com.example.swapiapp.data.storage.starships.ApiStarshipsLocalStorage
 import com.example.swapiapp.data.storage.starships.ApiStarshipsNetworkStorage
+import com.example.swapiapp.domain.models.Film
 import com.example.swapiapp.domain.models.People
 import com.example.swapiapp.domain.models.Starships
-import com.example.swapiapp.domain.repository.SwapiRepository
+import com.example.swapiapp.domain.repository.FilmsRepository
+import com.example.swapiapp.domain.repository.PeopleRepository
+import com.example.swapiapp.domain.repository.StarshipsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.single
 
-class SwapiRepositoryImpl(
+class RepositoryImpl(
     private val apiPeopleNetworkStorage: ApiPeopleNetworkStorage,
     private val apiStarshipsNetworkStorage: ApiStarshipsNetworkStorage,
     private val apiPeopleLocalStorage: ApiPeopleLocalStorage,
     private val apiStarshipsLocalStorage: ApiStarshipsLocalStorage
-) : SwapiRepository {
+) : PeopleRepository, StarshipsRepository, FilmsRepository {
     override suspend fun getAllFavoritePeople(): Flow<List<People>> {
         return flow {
             val peopleList = apiPeopleLocalStorage.getAllPeople().map { entity ->
@@ -36,7 +42,7 @@ class SwapiRepositoryImpl(
         }
     }
 
-    override suspend fun deletePeopleByName(name: String){
+    override suspend fun deletePeopleByName(name: String) {
         return apiPeopleLocalStorage.deletePeopleByName(name)
     }
 
@@ -81,20 +87,39 @@ class SwapiRepositoryImpl(
     }
 
     override suspend fun getStarshipsByName(name: String): List<Starships> {
-        return when (val data = apiStarshipsNetworkStorage.getStarshipsByName(name).single()) {
+        when (val data = apiStarshipsNetworkStorage.getStarshipsByName(name).single()) {
             is ResponseWrapper.Success -> {
                 val res = mapStarshipsDataToDomain(data.value)
                 return res
             }
 
             is ResponseWrapper.NetworkError -> {
-                Log.d("NO NETWORK", "NO NETWORK FOR LOAD FoodData")
-                emptyList()
+                throw NetworkErrorException("No network connection")
             }
 
             is ResponseWrapper.GenericError -> {
-                Log.d("GENERIC DATA", "${data.code}")
-                emptyList()
+                throw GenericErrorException("Generic http error occurred")
+            }
+        }
+    }
+
+    override suspend fun fetchFilms(url: String): Film {
+        val response = flow {
+            val response = safeNetworkCall(Dispatchers.IO) {
+                NetworkService.filmsService.fetchData(url)
+            }
+            emit(response)
+        }
+        when (val data = response.single()) {
+            is ResponseWrapper.Success -> {
+                return Film(title = data.value.title)
+            }
+            is ResponseWrapper.NetworkError -> {
+                throw NetworkErrorException("No network connection")
+            }
+
+            is ResponseWrapper.GenericError -> {
+                throw GenericErrorException("Generic http error occurred")
             }
         }
     }

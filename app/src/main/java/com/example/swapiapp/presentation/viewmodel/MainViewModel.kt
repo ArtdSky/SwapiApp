@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.swapiapp.data.network.GenericErrorException
+import com.example.swapiapp.domain.models.Film
 import com.example.swapiapp.domain.models.People
 import com.example.swapiapp.domain.models.Starships
 import com.example.swapiapp.domain.usecase.FavoritePeople
 import com.example.swapiapp.domain.usecase.FavoriteStarships
+import com.example.swapiapp.domain.usecase.FetchFilm
 import com.example.swapiapp.domain.usecase.GetPeopleByName
 import com.example.swapiapp.domain.usecase.GetStarshipsByName
 import com.example.swapiapp.presentation.state.ViewState
@@ -25,7 +27,8 @@ class MainViewModel(
     private val getPeopleByName: GetPeopleByName,
     private val getStarshipsByName: GetStarshipsByName,
     private val favoritePeople: FavoritePeople,
-    private val favoriteStarships: FavoriteStarships
+    private val favoriteStarships: FavoriteStarships,
+    private val fetchFilm: FetchFilm
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow(
@@ -85,14 +88,29 @@ class MainViewModel(
         }.await()
     }
 
-    fun deletePeopleFromFavorites(name : String){
+    fun deletePeopleFromFavorites(name: String) {
         viewModelScope.launch {
             favoritePeople.deleteByName(name)
         }
     }
-    fun deleteStarshipFromFavorites(name : String){
+
+    fun deleteStarshipFromFavorites(name: String) {
         viewModelScope.launch {
             favoriteStarships.deleteByName(name)
+        }
+    }
+
+    fun fetchFilmData(url: String, callback: (Film) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val res = fetchFilm(url)
+                callback(res)
+            } catch (e: NetworkErrorException) {
+                Log.d("TAG_VM", "error : ${e.message}")
+            } catch (e: GenericErrorException) {
+                Log.d("TAG_VM", "error : ${e.message}")
+            }
+
         }
     }
 }

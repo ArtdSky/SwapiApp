@@ -1,24 +1,24 @@
 package com.example.swapiapp.domain.usecase
 
 import com.example.swapiapp.domain.models.People
-import com.example.swapiapp.domain.repository.SwapiRepository
+import com.example.swapiapp.domain.repository.PeopleRepository
 import kotlinx.coroutines.flow.Flow
 
 class FavoritePeople(
-    private val swapiRepository: SwapiRepository
+    private val peopleRepository: PeopleRepository
 ) {
 
     suspend fun addToFavorite(people: People) {
-        return swapiRepository.addPeopleToFavorite(people)
+        return peopleRepository.addPeopleToFavorite(people)
 
     }
 
     suspend fun getAllFavorites(): Flow<List<People>> {
-        return swapiRepository.getAllFavoritePeople()
+        return peopleRepository.getAllFavoritePeople()
     }
 
     suspend fun deleteByName(name: String){
-        return swapiRepository.deletePeopleByName(name)
+        return peopleRepository.deletePeopleByName(name)
     }
 
 
