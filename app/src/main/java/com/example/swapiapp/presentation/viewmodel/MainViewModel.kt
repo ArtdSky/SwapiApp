@@ -13,12 +13,12 @@ class MainViewModel(
 ) : ViewModel() {
 
     init {
-        getPeople("Luk")
+        getPeople("uk")
     }
     fun getPeople(name: String) {
         viewModelScope.launch {
-
             getPeopleByName(name)
+            getStarshipsByName(name)
         }
     }
 
