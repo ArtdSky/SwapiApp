@@ -12,7 +12,7 @@
 | search screen    | <img src="assets/screen1.png" height="300"> |                                                                       |
 |                  | <img src="assets/screen2.png" height="300"> |                                                                       |
 | favorites screen | <img src="assets/screen3.png" height="300"> |                                                                       |
-| gif              | <img src="assets/review.mp4"  height="300"> |                                                                       |
+| gif              | <img src="assets/review.gif"  height="300"> |                                                                       |
 
 ## использованные технологии
 
