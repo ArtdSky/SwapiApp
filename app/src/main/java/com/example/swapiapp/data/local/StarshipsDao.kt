@@ -16,5 +16,6 @@ interface StarshipsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewStarship(starship: StarshipEntity)
 
-
+    @Query("DELETE FROM starships_table WHERE name = :name")
+    suspend fun deleteStarshipByName(name: String)
 }

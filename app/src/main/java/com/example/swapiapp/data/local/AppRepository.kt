@@ -24,5 +24,13 @@ class AppRepository(
         return starshipsDao.addNewStarship(starship)
     }
 
+    suspend fun deletePeopleById(name: String){
+        return peopleDao.deletePeopleByName(name)
+    }
+
+    suspend fun deleteStarshipById(name: String){
+        return starshipsDao.deleteStarshipByName(name)
+    }
+
 
 }

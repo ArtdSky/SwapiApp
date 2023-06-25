@@ -16,5 +16,6 @@ interface PeopleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewPeople(people: PeopleEntity)
 
-
+    @Query("DELETE FROM people_table WHERE name = :name")
+    suspend fun deletePeopleByName(name: String)
 }

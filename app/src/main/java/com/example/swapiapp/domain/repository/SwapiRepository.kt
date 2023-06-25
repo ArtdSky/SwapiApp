@@ -17,4 +17,9 @@ interface SwapiRepository {
     suspend fun getAllFavoriteStarships(): Flow<List<Starships>>
 
     suspend fun addStarshipToFavorite(starship: Starships)
+
+    suspend fun deletePeopleByName(name: String)
+
+    suspend fun deleteStarshipByName(name: String)
+
 }

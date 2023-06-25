@@ -84,4 +84,15 @@ class MainViewModel(
             favoriteStarships.getAllFavorites().single()
         }.await()
     }
+
+    fun deletePeopleFromFavorites(name : String){
+        viewModelScope.launch {
+            favoritePeople.deleteByName(name)
+        }
+    }
+    fun deleteStarshipFromFavorites(name : String){
+        viewModelScope.launch {
+            favoriteStarships.deleteByName(name)
+        }
+    }
 }

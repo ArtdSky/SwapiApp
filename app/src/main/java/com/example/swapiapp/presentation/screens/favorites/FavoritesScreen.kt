@@ -1,6 +1,5 @@
 package com.example.swapiapp.presentation.screens.favorites
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -84,7 +83,12 @@ fun FavoritesScreen(
                             PeopleCard(
                                 people = favoritePeople[index],
                                 deleteFromFavorite = {
-                                    Log.d("FAV", "CLICKED")
+                                    favoritePeople[index].name?.let {
+                                        vm.deletePeopleFromFavorites(
+                                            it
+                                        )
+                                    }
+                                    favoritePeople = favoritePeople.filter { it != favoritePeople[index] }
                                 }
                             )
                         }
@@ -112,7 +116,12 @@ fun FavoritesScreen(
                             StarshipsCard(
                                 starship = favoriteStarships[index],
                                 deleteFromFavorite = {
-                                    Log.d("FAV", "CLICKED")
+                                    favoriteStarships[index].name?.let {
+                                        vm.deleteStarshipFromFavorites(
+                                            it
+                                        )
+                                    }
+                                    favoriteStarships = favoriteStarships.filter { it != favoriteStarships[index] }
                                 }
                             )
                         }

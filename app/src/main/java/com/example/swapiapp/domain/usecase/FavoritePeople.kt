@@ -17,5 +17,9 @@ class FavoritePeople(
         return swapiRepository.getAllFavoritePeople()
     }
 
+    suspend fun deleteByName(name: String){
+        return swapiRepository.deletePeopleByName(name)
+    }
+
 
 }

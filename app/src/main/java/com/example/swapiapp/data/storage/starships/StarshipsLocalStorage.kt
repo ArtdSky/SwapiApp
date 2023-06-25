@@ -7,4 +7,7 @@ interface StarshipsLocalStorage {
     suspend fun getAllStarships(): List<StarshipEntity>
 
     suspend fun addNewStarship(starship: StarshipEntity)
+
+    suspend fun deleteStarshipByName(name: String)
+
 }

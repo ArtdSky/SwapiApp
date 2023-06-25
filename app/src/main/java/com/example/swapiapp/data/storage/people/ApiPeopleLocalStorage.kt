@@ -13,4 +13,10 @@ class ApiPeopleLocalStorage(
     override suspend fun addNewPeople(people: PeopleEntity) {
         return appRepository.addNewPeople(people)
     }
+
+    override suspend fun deletePeopleByName(name: String) {
+        return appRepository.deletePeopleById(name)
+    }
+
+
 }

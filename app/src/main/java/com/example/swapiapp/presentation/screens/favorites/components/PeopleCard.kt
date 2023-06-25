@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
@@ -31,11 +32,9 @@ fun PeopleCard(
     people: People,
     deleteFromFavorite: () -> Unit
 ) {
-    val isFavorite = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF386BEB),
@@ -59,12 +58,11 @@ fun PeopleCard(
                 Text(text = "Фильмы: ${people.films?.size}")
             }
             Icon(
-                imageVector = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                imageVector = Icons.Default.Delete,
                 contentDescription = "Delete from Favorites",
                 modifier = Modifier
                     .size(24.dp)
                     .clickable {
-                        isFavorite.value = !isFavorite.value
                         deleteFromFavorite()
                     }
             )

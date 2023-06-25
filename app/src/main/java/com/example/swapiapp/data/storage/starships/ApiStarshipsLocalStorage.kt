@@ -14,4 +14,8 @@ class ApiStarshipsLocalStorage(
     override suspend fun addNewStarship(starship: StarshipEntity) {
         return appRepository.addNewStarship(starship)
     }
+
+    override suspend fun deleteStarshipByName(name: String) {
+        return appRepository.deleteStarshipById(name)
+    }
 }

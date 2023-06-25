@@ -36,6 +36,14 @@ class SwapiRepositoryImpl(
         }
     }
 
+    override suspend fun deletePeopleByName(name: String){
+        return apiPeopleLocalStorage.deletePeopleByName(name)
+    }
+
+    override suspend fun deleteStarshipByName(name: String) {
+        return apiStarshipsLocalStorage.deleteStarshipByName(name)
+    }
+
     override suspend fun addPeopleToFavorite(people: People) {
         val peopleEntity = mapPeopleToEntity(people)
         return apiPeopleLocalStorage.addNewPeople(peopleEntity)

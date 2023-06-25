@@ -6,4 +6,7 @@ interface PeopleLocalStorage  {
     suspend fun getAllPeople(): List<PeopleEntity>
 
     suspend fun addNewPeople(people: PeopleEntity)
+
+    suspend fun deletePeopleByName(name: String)
+
 }

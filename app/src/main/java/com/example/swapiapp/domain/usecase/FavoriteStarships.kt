@@ -17,5 +17,8 @@ class FavoriteStarships(
         return swapiRepository.getAllFavoriteStarships()
     }
 
+    suspend fun deleteByName(name: String){
+        return swapiRepository.deleteStarshipByName(name)
+    }
 
 }
