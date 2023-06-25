@@ -1,5 +1,6 @@
 package com.example.swapiapp.presentation.screens.search
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,7 +76,8 @@ fun SearchScreen(
                                 PeopleCard(
                                     name = people[index].name ?: "",
                                     gender = people[index].gender ?: "",
-                                    starshipsCount = people[index].starshipsCount ?: 0
+                                    starshipsCount = people[index].starshipsCount ?: 0,
+                                    onClickFavorite = { Log.d("fav", "clicked") }
                                 )
                             }
                         }
