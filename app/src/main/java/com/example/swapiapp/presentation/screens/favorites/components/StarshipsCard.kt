@@ -1,4 +1,5 @@
-package com.example.swapiapp.presentation.screens.search.components
+package com.example.swapiapp.presentation.screens.favorites.components
+
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -24,22 +25,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.swapiapp.domain.models.Starships
 
 @Composable
-fun PeopleCard(
-    name: String,
-    gender: String,
-    starshipsCount: Int,
-    addToFavorite: () -> Unit
+fun StarshipsCard(
+    starship: Starships,
+    deleteFromFavorite: () -> Unit
 ) {
     val isFavorite = remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(120.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF386BEB),
+            containerColor = Color(0xFFA138EB),
             contentColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -50,21 +51,42 @@ fun PeopleCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = "Имя: $name")
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "Название: ${starship.name}",
+                    color = Color.White
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Пол: $gender")
+                Text(
+                    text = "Модель: ${starship.model}",
+                    color = Color.White
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Пилотировал звездолетов: $starshipsCount")
+                Text(
+                    text = "Произведено: ${starship.manufacturer}",
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Пассажиров: ${starship.passengers}",
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Фильмы: ${starship.films?.size}",
+                    color = Color.White
+                )
             }
             Icon(
                 imageVector = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Add to Favorites",
+                contentDescription = "Delete from Favorites",
                 modifier = Modifier
                     .size(24.dp)
                     .clickable {
                         isFavorite.value = !isFavorite.value
-                        addToFavorite()
+                        deleteFromFavorite()
                     }
             )
         }

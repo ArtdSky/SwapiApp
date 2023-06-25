@@ -1,4 +1,4 @@
-package com.example.swapiapp.presentation.screens.search.components
+package com.example.swapiapp.presentation.screens.favorites.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -24,13 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.swapiapp.domain.models.People
 
 @Composable
 fun PeopleCard(
-    name: String,
-    gender: String,
-    starshipsCount: Int,
-    addToFavorite: () -> Unit
+    people: People,
+    deleteFromFavorite: () -> Unit
 ) {
     val isFavorite = remember { mutableStateOf(false) }
     Card(
@@ -51,20 +50,22 @@ fun PeopleCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "Имя: $name")
+                Text(text = "Имя: ${people.name}")
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Пол: $gender")
+                Text(text = "Пол: ${people.gender}")
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Пилотировал звездолетов: $starshipsCount")
+                Text(text = "Пилотировал звездолетов: ${people.starshipsCount}")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Фильмы: ${people.films?.size}")
             }
             Icon(
                 imageVector = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Add to Favorites",
+                contentDescription = "Delete from Favorites",
                 modifier = Modifier
                     .size(24.dp)
                     .clickable {
                         isFavorite.value = !isFavorite.value
-                        addToFavorite()
+                        deleteFromFavorite()
                     }
             )
         }
