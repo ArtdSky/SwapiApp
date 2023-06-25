@@ -1,9 +1,11 @@
 package com.example.swapiapp.data.repository
 
+import android.accounts.NetworkErrorException
 import android.util.Log
 import com.example.swapiapp.data.repository.mappers.mapPeopleDataToDomain
 import com.example.swapiapp.data.repository.mappers.mapStarshipsDataToDomain
 import com.example.swapiapp.data.storage.Storage
+import com.example.swapiapp.data.storage.network.GenericErrorException
 import com.example.swapiapp.data.storage.network.ResponseWrapper
 import com.example.swapiapp.domain.models.People
 import com.example.swapiapp.domain.models.Starships
@@ -14,18 +16,16 @@ class SwapiRepositoryImpl(
     private val storage: Storage
 ) : SwapiRepository {
     override suspend fun getPeopleByName(name: String): List<People> {
-        return when (val data = storage.getPeopleByName(name).single()) {
+        when (val data = storage.getPeopleByName(name).single()) {
             is ResponseWrapper.Success -> {
                 val res = mapPeopleDataToDomain( data.value )
                 return res
             }
             is ResponseWrapper.NetworkError -> {
-                Log.d("NO NETWORK", "NO NETWORK FOR LOAD FoodData")
-                emptyList()
+                throw NetworkErrorException("No network connection")
             }
             is ResponseWrapper.GenericError -> {
-                Log.d("GENERIC DATA", "${data.code}")
-                emptyList()
+                throw GenericErrorException("Generic http error occurred")
             }
         }
     }

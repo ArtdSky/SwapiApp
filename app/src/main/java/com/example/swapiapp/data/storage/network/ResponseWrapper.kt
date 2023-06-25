@@ -27,3 +27,5 @@ sealed class ResponseWrapper<out T> {
      */
     data class GenericError(val code: Int? = null) : ResponseWrapper<Nothing>()
 }
+
+class GenericErrorException(message: String) : Exception(message)
