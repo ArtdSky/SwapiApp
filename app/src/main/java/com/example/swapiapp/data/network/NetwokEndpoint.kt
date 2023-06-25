@@ -1,7 +1,7 @@
-package com.example.swapiapp.data.storage.network
+package com.example.swapiapp.data.network
 
-import com.example.swapiapp.data.storage.network.models.PeopleResponse
-import com.example.swapiapp.data.storage.network.models.StarshipsResponse
+import com.example.swapiapp.data.network.models.PeopleResponse
+import com.example.swapiapp.data.network.models.StarshipsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package com.example.swapiapp.data.storage.network
+package com.example.swapiapp.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

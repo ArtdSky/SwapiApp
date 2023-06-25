@@ -1,4 +1,4 @@
-package com.example.swapiapp.data.storage.network
+package com.example.swapiapp.data.network
 
 /**
  * [ResponseWrapper] является sealed классом, предоставляющим различные варианты оберток для сетевых ответов.

@@ -1,4 +1,4 @@
-package com.example.swapiapp.data.storage.network.models
+package com.example.swapiapp.data.network.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

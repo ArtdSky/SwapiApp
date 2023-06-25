@@ -4,7 +4,9 @@ import android.accounts.NetworkErrorException
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.swapiapp.data.storage.network.GenericErrorException
+import com.example.swapiapp.data.network.GenericErrorException
+import com.example.swapiapp.domain.usecase.FavoritePeople
+import com.example.swapiapp.domain.usecase.FavoriteStarships
 import com.example.swapiapp.domain.usecase.GetPeopleByName
 import com.example.swapiapp.domain.usecase.GetStarshipsByName
 import com.example.swapiapp.presentation.state.ViewState
@@ -13,9 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+const val TAG = "VM"
 class MainViewModel(
     private val getPeopleByName: GetPeopleByName,
-    private val getStarshipsByName: GetStarshipsByName
+    private val getStarshipsByName: GetStarshipsByName,
+    private val favoritePeople: FavoritePeople,
+    private val favoriteStarships: FavoriteStarships
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow(
@@ -30,6 +35,9 @@ class MainViewModel(
             try {
                 val people = getPeopleByName(name)
                 val starships = getStarshipsByName(name)
+
+                Log.d(TAG, people.toString())
+                Log.d(TAG, starships.toString())
 
                 _viewState.update { currentState ->
                     currentState.copy(

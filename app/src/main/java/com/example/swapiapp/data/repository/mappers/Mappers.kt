@@ -2,8 +2,8 @@ package com.example.swapiapp.data.repository.mappers
 
 
 import com.example.swapiapp.domain.models.People
-import com.example.swapiapp.data.storage.network.models.PeopleResponse
-import com.example.swapiapp.data.storage.network.models.StarshipsResponse
+import com.example.swapiapp.data.network.models.PeopleResponse
+import com.example.swapiapp.data.network.models.StarshipsResponse
 import com.example.swapiapp.domain.models.Starships
 
 fun mapPeopleDataToDomain(peopleData: PeopleResponse): List<People> {

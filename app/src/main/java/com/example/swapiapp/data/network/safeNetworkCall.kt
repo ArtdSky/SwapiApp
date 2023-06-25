@@ -1,4 +1,4 @@
-package com.example.swapiapp.data.storage.network
+package com.example.swapiapp.data.network
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
