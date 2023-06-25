@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.swapiapp.presentation.navigation.NavState
 import com.example.swapiapp.presentation.viewmodel.MainViewModel
 import com.example.swapiapp.ui.theme.SwapiAppTheme
 import org.koin.androidx.compose.koinViewModel
@@ -33,5 +34,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainActivityScreen() {
     val myViewModel: MainViewModel = koinViewModel()
-    Text(text = "test")
+    NavState(vm = myViewModel)
 }
