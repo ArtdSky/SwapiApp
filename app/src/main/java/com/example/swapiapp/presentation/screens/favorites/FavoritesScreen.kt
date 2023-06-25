@@ -1,4 +1,4 @@
-package com.example.swapiapp.presentation.screens
+package com.example.swapiapp.presentation.screens.favorites
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
