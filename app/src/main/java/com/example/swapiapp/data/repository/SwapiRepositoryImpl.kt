@@ -2,17 +2,23 @@ package com.example.swapiapp.data.repository
 
 import android.accounts.NetworkErrorException
 import android.util.Log
-import com.example.swapiapp.data.repository.mappers.mapPeopleDataToDomain
-import com.example.swapiapp.data.repository.mappers.mapStarshipsDataToDomain
-import com.example.swapiapp.data.storage.people.ApiPeopleNetworkStorage
-import com.example.swapiapp.data.storage.starships.ApiStarshipsNetworkStorage
 import com.example.swapiapp.data.network.GenericErrorException
 import com.example.swapiapp.data.network.ResponseWrapper
+import com.example.swapiapp.data.repository.mappers.mapEntityToPeople
+import com.example.swapiapp.data.repository.mappers.mapEntityToStarships
+import com.example.swapiapp.data.repository.mappers.mapPeopleDataToDomain
+import com.example.swapiapp.data.repository.mappers.mapPeopleToEntity
+import com.example.swapiapp.data.repository.mappers.mapStarshipsDataToDomain
+import com.example.swapiapp.data.repository.mappers.mapStarshipsToEntity
 import com.example.swapiapp.data.storage.people.ApiPeopleLocalStorage
+import com.example.swapiapp.data.storage.people.ApiPeopleNetworkStorage
 import com.example.swapiapp.data.storage.starships.ApiStarshipsLocalStorage
+import com.example.swapiapp.data.storage.starships.ApiStarshipsNetworkStorage
 import com.example.swapiapp.domain.models.People
 import com.example.swapiapp.domain.models.Starships
 import com.example.swapiapp.domain.repository.SwapiRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.single
 
 class SwapiRepositoryImpl(
@@ -21,20 +27,32 @@ class SwapiRepositoryImpl(
     private val apiPeopleLocalStorage: ApiPeopleLocalStorage,
     private val apiStarshipsLocalStorage: ApiStarshipsLocalStorage
 ) : SwapiRepository {
-    override suspend fun getAllFavoritePeople(): List<People> {
-        TODO("Not yet implemented")
+    override suspend fun getAllFavoritePeople(): Flow<List<People>> {
+        return flow {
+            val peopleList = apiPeopleLocalStorage.getAllPeople().map { entity ->
+                mapEntityToPeople(entity)
+            }
+            emit(peopleList)
+        }
     }
 
     override suspend fun addPeopleToFavorite(people: People) {
-        TODO("Not yet implemented")
+        val peopleEntity = mapPeopleToEntity(people)
+        return apiPeopleLocalStorage.addNewPeople(peopleEntity)
     }
 
-    override suspend fun getAllFavoriteStarships(): List<Starships> {
-        TODO("Not yet implemented")
+    override suspend fun getAllFavoriteStarships(): Flow<List<Starships>> {
+        return flow {
+            val starshipList = apiStarshipsLocalStorage.getAllStarships().map {
+                mapEntityToStarships(it)
+            }
+            emit(starshipList)
+        }
     }
 
     override suspend fun addStarshipToFavorite(starship: Starships) {
-        TODO("Not yet implemented")
+        val starshipEntity = mapStarshipsToEntity(starship)
+        return apiStarshipsLocalStorage.addNewStarship(starshipEntity)
     }
 
     override suspend fun getPeopleByName(name: String): List<People> {

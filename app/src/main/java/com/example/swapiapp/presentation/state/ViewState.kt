@@ -8,5 +8,5 @@ data class ViewState(
     val isNoNetworkError: Boolean = false,
     val loading: Boolean = false,
     val people: List<People>? = null,
-    val starships: List<Starships>? = null
+    val starships: List<Starships>? = null,
 )

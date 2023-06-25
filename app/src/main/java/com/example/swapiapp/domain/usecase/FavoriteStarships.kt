@@ -2,6 +2,7 @@ package com.example.swapiapp.domain.usecase
 
 import com.example.swapiapp.domain.models.Starships
 import com.example.swapiapp.domain.repository.SwapiRepository
+import kotlinx.coroutines.flow.Flow
 
 class FavoriteStarships(
     private val swapiRepository: SwapiRepository
@@ -12,7 +13,7 @@ class FavoriteStarships(
 
     }
 
-    suspend fun getAllFavorites(): List<Starships> {
+    suspend fun getAllFavorites(): Flow<List<Starships>> {
         return swapiRepository.getAllFavoriteStarships()
     }
 
