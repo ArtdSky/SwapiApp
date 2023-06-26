@@ -112,7 +112,11 @@ class RepositoryImpl(
         }
         when (val data = response.single()) {
             is ResponseWrapper.Success -> {
-                return Film(title = data.value.title)
+                return Film(
+                    title = data.value.title,
+                    director = data.value.director,
+                    producer = data.value.producer
+                )
             }
             is ResponseWrapper.NetworkError -> {
                 throw NetworkErrorException("No network connection")

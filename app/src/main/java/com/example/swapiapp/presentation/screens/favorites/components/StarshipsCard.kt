@@ -17,23 +17,44 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.swapiapp.domain.models.Film
 import com.example.swapiapp.domain.models.Starships
+import com.example.swapiapp.presentation.viewmodel.MainViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StarshipsCard(
     starship: Starships,
+    vm: MainViewModel,
     deleteFromFavorite: () -> Unit
 ) {
-
+    val films = remember { mutableStateListOf<Film?>() }
+    val isLoading = remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
+    if (isExpanded) {
+        isLoading.value = true
+        starship.films?.forEach { film ->
+            vm.fetchFilmData(film) { fetchedFilm ->
+                films.add(fetchedFilm)
+            }
+        }
+        isLoading.value = false
+    } else {
+        films.clear()
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -42,7 +63,12 @@ fun StarshipsCard(
             containerColor = Color(0xFFA138EB),
             contentColor = Color.White
         ),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        onClick = {
+            if (!isLoading.value) {
+                isExpanded = !isExpanded
+            }
+        }
     ) {
         Row(
             modifier = Modifier
@@ -73,10 +99,21 @@ fun StarshipsCard(
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Фильмы: ${starship.films?.size}",
-                    color = Color.White
-                )
+
+                if (isExpanded) {
+
+                    films.forEach { film ->
+                        if (film != null) {
+                            Column {
+                                Text(text = "Фильм: ${film.title}")
+                                Text(text = "Режисер: ${film.director}")
+                                Text(text = "Продюсер: ${film.producer}")
+                            }
+                        }
+                    }
+                } else {
+                    Text(text = "Фильмы: ${starship.films?.size}")
+                }
             }
             Icon(
                 imageVector = Icons.Default.Delete,

@@ -24,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.swapiapp.domain.models.People
+import com.example.swapiapp.domain.models.Starships
 import com.example.swapiapp.presentation.navigation.AppDestination
 import com.example.swapiapp.presentation.screens.BottomNavigation
 import com.example.swapiapp.presentation.screens.StarryBackground
@@ -40,6 +42,13 @@ fun SearchScreen(
     vm: MainViewModel
 ) {
     val state by vm.viewState.collectAsState()
+    val people: List<People>? = state.people
+    val starships: List<Starships>? = state.starships
+    val resultList = mutableListOf<Any>()
+
+    people?.let { resultList.addAll(it) }
+    starships?.let { resultList.addAll(it) }
+
 
     Scaffold(
         content = {
@@ -66,66 +75,56 @@ fun SearchScreen(
                                     .padding(16.dp)
                             )
                         } else {
-                            if (state.people != null) Text(
-                                text = "Пилоты",
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center,
-                                    letterSpacing = 0.5.sp
-                                ),
-                                modifier = Modifier.padding(bottom = 4.dp)
-                            )
-                            LazyColumn(
-                                modifier = Modifier.weight(1f),
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp),
-                            ) {
-                                state.people?.let { people ->
-                                    items(people.size) { index ->
-                                        PeopleCard(
-                                            name = people[index].name ?: "Unknown",
-                                            gender = people[index].gender ?: "Unknown",
-                                            starshipsCount = people[index].starshipsCount ?: 0,
-                                            addToFavorite = {
-                                                vm.addToFavoritePeople(
-                                                    people = people[index]
-                                                )
-                                            }
-                                        )
-                                    }
-                                }
+                            if (resultList.isNotEmpty()) {
+                                Text(
+                                    text = "Найдено",
+                                    style = TextStyle(
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center,
+                                        letterSpacing = 0.5.sp
+                                    ),
+                                    modifier = Modifier.padding(bottom = 4.dp)
+                                )
                             }
-                            if (state.starships != null) Text(
-                                text = "Звездолеты",
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center,
-                                    letterSpacing = 0.5.sp
-                                ),
-                                modifier = Modifier.padding(bottom = 4.dp)
-                            )
                             LazyColumn(
                                 modifier = Modifier.weight(1f),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                state.starships?.let { starships ->
-                                    items(starships.size) { index ->
-                                        StarshipsCard(
-                                            name = starships[index].name ?: "Unknown",
-                                            model = starships[index].model ?: "Unknown",
-                                            manufactured = starships[index].manufacturer ?: "Unknown",
-                                            passengers = starships[index].passengers ?: "0",
-                                            addToFavorite = {
-                                                vm.addToFavoriteStarship(
-                                                    starship = starships[index]
-                                                )
-                                            }
-                                        )
+                                items(resultList.size) { index ->
+                                    when (val item = resultList[index]) {
+                                        is People -> {
+                                            PeopleCard(
+                                                name = item.name ?: "Unknown",
+                                                gender = item.gender ?: "Unknown",
+                                                starshipsCount = item.starshipsCount ?: 0,
+                                                addToFavorite = {
+                                                    vm.addToFavoritePeople(
+                                                        people = item
+                                                    )
+                                                }
+                                            )
+                                        }
+
+                                        is Starships -> {
+                                            StarshipsCard(
+                                                name = item.name ?: "Unknown",
+                                                model = item.model ?: "Unknown",
+                                                manufactured = item.manufacturer ?: "Unknown",
+                                                passengers = item.passengers ?: "0",
+                                                addToFavorite = {
+                                                    vm.addToFavoriteStarship(
+                                                        starship = item
+                                                    )
+                                                }
+                                            )
+                                        }
+
+                                        else -> null
                                     }
                                 }
+
                             }
                         }
                     }

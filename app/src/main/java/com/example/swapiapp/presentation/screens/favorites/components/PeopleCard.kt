@@ -87,7 +87,11 @@ fun PeopleCard(
 
                     films.forEach { film ->
                         if (film != null) {
-                            Text(text = "Фильм: ${film.title}")
+                            Column {
+                                Text(text = "Фильм: ${film.title}")
+                                Text(text = "Режисер: ${film.director}")
+                                Text(text = "Продюсер: ${film.producer}")
+                            }
                         }
                     }
                 } else {
