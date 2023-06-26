@@ -101,6 +101,7 @@ fun FavoritesScreen(
                                 is Starships -> {
                                     StarshipsCard(
                                         starship = item,
+                                        vm = vm,
                                         deleteFromFavorite = {
                                             item.name?.let {
                                                 vm.deleteStarshipFromFavorites(
