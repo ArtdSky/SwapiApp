@@ -5,5 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FilmResponse(
-    @Json(name = "title") val title: String
+    @Json(name = "title") val title: String,
+    @Json(name = "director") val director: String,
+    @Json(name = "producer") val producer: String
 )

@@ -38,7 +38,7 @@ import com.example.swapiapp.presentation.viewmodel.MainViewModel
 @Composable
 fun StarshipsCard(
     starship: Starships,
-    vm : MainViewModel,
+    vm: MainViewModel,
     deleteFromFavorite: () -> Unit
 ) {
     val films = remember { mutableStateListOf<Film?>() }
@@ -104,7 +104,11 @@ fun StarshipsCard(
 
                     films.forEach { film ->
                         if (film != null) {
-                            Text(text = "Фильм: ${film.title}")
+                            Column {
+                                Text(text = "Фильм: ${film.title}")
+                                Text(text = "Режисер: ${film.director}")
+                                Text(text = "Продюсер: ${film.producer}")
+                            }
                         }
                     }
                 } else {
