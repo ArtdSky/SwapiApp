@@ -47,7 +47,10 @@ fun FavoritesScreen(
         favoritePeople = vm.getFavoritePeople()
         favoriteStarships = vm.getFavoriteStarships()
     }
+    val resultList = mutableListOf<Any>()
 
+    favoritePeople.let { resultList.addAll(it) }
+    favoriteStarships.let { resultList.addAll(it) }
 
     Scaffold(
         content = { paddingValues ->
@@ -61,9 +64,9 @@ fun FavoritesScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    if (favoritePeople.isNotEmpty()) {
+                    if (resultList.isNotEmpty()) {
                         Text(
-                            text = "Пилоты",
+                            text = "Найдено",
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
@@ -79,54 +82,44 @@ fun FavoritesScreen(
                         contentPadding = PaddingValues(horizontal = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(favoritePeople.size) { index ->
-                            PeopleCard(
-                                people = favoritePeople[index],
-                                vm = vm,
-                                deleteFromFavorite = {
-                                    favoritePeople[index].name?.let {
-                                        vm.deletePeopleFromFavorites(
-                                            it
-                                        )
-                                    }
-                                    favoritePeople = favoritePeople.filter { it != favoritePeople[index] }
+                        items(resultList.size) { index ->
+                            when(val item = resultList[index]){
+                                is People -> {
+                                    PeopleCard(
+                                        people = item,
+                                        vm = vm,
+                                        deleteFromFavorite = {
+                                            item.name?.let {
+                                                vm.deletePeopleFromFavorites(
+                                                    it
+                                                )
+                                            }
+                                            favoritePeople = favoritePeople.filter { it != item }
+                                        }
+                                    )
                                 }
-                            )
+                                is Starships -> {
+                                    StarshipsCard(
+                                        starship = item,
+                                        deleteFromFavorite = {
+                                            item.name?.let {
+                                                vm.deleteStarshipFromFavorites(
+                                                    it
+                                                )
+                                            }
+                                            favoriteStarships = favoriteStarships.filter { it != item }
+                                        }
+                                    )
+                                }
+                                else -> null
+                            }
+
                         }
                     }
 
-                    if (favoriteStarships.isNotEmpty()) {
-                        Text(
-                            text = "Звездолеты",
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center,
-                                letterSpacing = 0.5.sp
-                            ),
-                            modifier = Modifier.padding(bottom = 4.dp)
-                        )
-                    }
 
-                    LazyColumn(
-                        modifier = Modifier.weight(1f),
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(favoriteStarships.size) { index ->
-                            StarshipsCard(
-                                starship = favoriteStarships[index],
-                                deleteFromFavorite = {
-                                    favoriteStarships[index].name?.let {
-                                        vm.deleteStarshipFromFavorites(
-                                            it
-                                        )
-                                    }
-                                    favoriteStarships = favoriteStarships.filter { it != favoriteStarships[index] }
-                                }
-                            )
-                        }
-                    }
+
+
 
 
                 }
