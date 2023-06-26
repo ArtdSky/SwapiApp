@@ -76,7 +76,7 @@ fun SearchScreen(
                                     .padding(16.dp)
                             )
                         } else {
-                            if (state.people != null) {
+                            if (resultList.isNotEmpty()) {
                                 Text(
                                     text = "Найдено",
                                     style = TextStyle(
