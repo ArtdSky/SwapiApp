@@ -49,7 +49,6 @@ fun SearchScreen(
     people?.let { resultList.addAll(it) }
     starships?.let { resultList.addAll(it) }
 
-    Log.d("SEARCHSCREEN", resultList.toString())
 
     Scaffold(
         content = {
